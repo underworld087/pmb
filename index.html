@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Presupuesto Club 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+    <!-- SCRIPT DE LOGIN ANTES DE MOSTRAR LA PÁGINA -->
+    <script>
+        (function() {
+            var claveCorrecta = "PMB2026";
+            var intento = prompt("Ingrese código Administración:");
+            
+            if (intento !== claveCorrecta) {
+                alert("Acceso Denegado. Código incorrecto.");
+                document.write('<body style="background:#f3f4f6; display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif;"><div style="text-align:center; background:white; border-radius:12px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); padding: 2rem;"><h1 style="color:#ef4444; margin-bottom:10px;">🔒 No autorizado</h1><p style="color:#6b7280;">No tienes permisos para ver este simulador financiero.</p></div></body>');
+                window.stop();
+            }
+        })();
+    </script>
+</head>
+<body class="p-4 md:p-8 flex flex-col items-center min-h-screen">
+
+    <!-- HEADER CON EL LOGO DEL CLUB -->
+    <div class="w-full max-w-6xl mb-6 text-center flex flex-col items-center">
+        <img src="image_b75dae.jpg" alt="Puerto Montt Básquet" class="h-32 md:h-40 object-cover rounded-xl shadow-md mb-4 w-full md:w-3/4 lg:w-1/2" onerror="this.src='https://placehold.co/800x300/1e3a8a/ffffff?text=Puerto+Montt+Basquet'">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Panel Financiero y Proyección 2026</h1>
+        <p class="text-gray-500">Analiza el estado actual y ajusta el ingreso de jugadores considerando el margen de morosidad.</p>
+    </div>
+
+    <!-- CONTENEDOR DE TABLAS DE ESTADO ACTUAL -->
+    <div class="w-full max-w-6xl flex flex-col lg:flex-row gap-6 mb-6">
+        
+        <!-- TABLA DE JUGADORES (INGRESOS BASE) -->
+        <div class="w-full lg:w-3/5 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+            <div class="px-5 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                <h2 class="text-md font-bold text-gray-700">Estado Actual de Jugadores</h2>
+                <span class="text-xs font-semibold px-3 py-1 bg-blue-100 text-blue-700 rounded-full">Base Ideal: $3.945.000</span>
+            </div>
+            <div class="overflow-x-auto flex-grow">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-gray-50/50 text-gray-600 font-semibold border-b text-[13px]">
+                        <tr>
+                            <th class="px-5 py-3">Serie</th>
+                            <th class="px-3 py-3 text-center">Normales</th>
+                            <th class="px-3 py-3 text-center">C/Hnos</th>
+                            <th class="px-3 py-3 text-center">Becados</th>
+                            <th class="px-4 py-3 text-center font-bold text-blue-700">Total</th>
+                            <th class="px-5 py-3 text-right">Recaudación</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-[13.5px]">
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-5 py-2.5 font-semibold text-gray-700">U9</td>
+                            <td class="px-3 py-2.5 text-center">12</td><td class="px-3 py-2.5 text-center">2</td><td class="px-3 py-2.5 text-center">0</td>
+                            <td class="px-4 py-2.5 text-center font-bold text-blue-600">14</td>
+                            <td class="px-5 py-2.5 text-right font-medium text-gray-600">$620.000</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-5 py-2.5 font-semibold text-gray-700">U11</td>
+                            <td class="px-3 py-2.5 text-center">18</td><td class="px-3 py-2.5 text-center">1</td><td class="px-3 py-2.5 text-center">0</td>
+                            <td class="px-4 py-2.5 text-center font-bold text-blue-600">19</td>
+                            <td class="px-5 py-2.5 text-right font-medium text-gray-600">$850.000</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-5 py-2.5 font-semibold text-gray-700">U13</td>
+                            <td class="px-3 py-2.5 text-center">14</td><td class="px-3 py-2.5 text-center">4</td><td class="px-3 py-2.5 text-center">5</td>
+                            <td class="px-4 py-2.5 text-center font-bold text-blue-600">23</td>
+                            <td class="px-5 py-2.5 text-right font-medium text-gray-600">$790.000</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-5 py-2.5 font-semibold text-gray-700">U15</td>
+                            <td class="px-3 py-2.5 text-center">16</td><td class="px-3 py-2.5 text-center">3</td><td class="px-3 py-2.5 text-center">0</td>
+                            <td class="px-4 py-2.5 text-center font-bold text-blue-600">19</td>
+                            <td class="px-5 py-2.5 text-right font-medium text-gray-600">$840.000</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-5 py-2.5 font-semibold text-gray-700">U17</td>
+                            <td class="px-3 py-2.5 text-center">17</td><td class="px-3 py-2.5 text-center">2</td><td class="px-3 py-2.5 text-center">1</td>
+                            <td class="px-4 py-2.5 text-center font-bold text-blue-600">20</td>
+                            <td class="px-5 py-2.5 text-right font-medium text-gray-600">$845.000</td>
+                        </tr>
+                        <tr class="bg-gray-50 font-bold border-t-2 border-gray-200">
+                            <td class="px-5 py-3 text-gray-800">TOTALES</td>
+                            <td class="px-3 py-3 text-center">77</td><td class="px-3 py-3 text-center">12</td><td class="px-3 py-3 text-center">6</td>
+                            <td class="px-4 py-3 text-center text-blue-700">95</td>
+                            <td class="px-5 py-3 text-right text-gray-800">$3.945.000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TABLA DE GASTOS FIJOS -->
+        <div class="w-full lg:w-2/5 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+            <div class="px-5 py-4 border-b border-gray-100 bg-red-50 flex justify-between items-center">
+                <h2 class="text-md font-bold text-gray-700">Desglose de Gastos Fijos</h2>
+                <span class="text-xs font-semibold px-3 py-1 bg-red-100 text-red-700 rounded-full">Total: $5.051.281</span>
+            </div>
+            <div class="overflow-y-auto flex-grow">
+                <table class="w-full text-sm text-left">
+                    <tbody class="divide-y divide-gray-100 text-[13.5px]">
+                        <tr class="hover:bg-red-50/50 transition-colors">
+                            <td class="px-5 py-2 text-gray-600">Entrenadores</td>
+                            <td class="px-5 py-2 text-right font-medium text-gray-800">$2.000.000</td>
+                        </tr>
+                        <tr class="hover:bg-red-50/50 transition-colors">
+                            <td class="px-5 py-2 text-gray-600">Asistente del entrenador</td>
+                            <td class="px-5 py-2 text-right font-medium text-gray-800">$300.000</td>
+                        </tr>
+                        <tr class="hover:bg-red-50/50 transition-colors">
+                            <td class="px-5 py-2 text-gray-600">Preparadores físicos</td>
+                            <td class="px-5 py-2 text-right font-medium text-gray-800">$800.000</td>
+                        </tr>
+                        <tr class="hover:bg-red-50/50 transition-colors">
+                            <td class="px-5 py-2 text-gray-600">Arriendo gimnasio y jaula</td>
+                            <td class="px-5 py-2 text-right font-medium text-gray-800">$1.300.000</td>
+                        </tr>
+                        <tr class="hover:bg-red-50/50 transition-colors">
+                            <td class="px-5 py-2 text-gray-600">Mantención ctas. ctes.</td>
+                            <td class="px-5 py-2 text-right font-medium text-gray-800">$52.364</td>
+                        </tr>
+                        <tr class="hover:bg-red-50/50 transition-colors">
+                            <td class="px-5 py-2 text-gray-600">Asociación de Básquetbol</td>
+                            <td class="px-5 py-2 text-right font-medium text-gray-800">$100.000</td>
+                        </tr>
+                        <tr class="hover:bg-red-50/50 transition-colors">
+                            <td class="px-5 py-2 text-gray-600">Pensión refuerzo U13</td>
+                            <td class="px-5 py-2 text-right font-medium text-gray-800">$247.000</td>
+                        </tr>
+                        <tr class="hover:bg-red-50/50 transition-colors border-b">
+                            <td class="px-5 py-2 text-gray-600">PPM</td>
+                            <td class="px-5 py-2 text-right font-medium text-gray-800">$251.917</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SECCIÓN DE SIMULACIÓN DINÁMICA -->
+    <div class="w-full max-w-6xl flex flex-col md:flex-row gap-6">
+        
+        <!-- COLUMNA IZQUIERDA: CONTROLES -->
+        <div class="w-full md:w-1/3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col gap-5">
+            <h2 class="text-lg font-bold text-gray-700 border-b pb-2">Simulador de Crecimiento</h2>
+            <p class="text-[13px] text-gray-500 -mt-2">Simula el volumen de jugadores. Cada alumno <strong>adicional</strong> a la base paga tarifa normal de <strong class="text-gray-700">$45.000</strong>.</p>
+            
+            <div class="flex flex-col gap-4 mt-2">
+                <div class="flex justify-between items-center"><label class="text-[13px] font-semibold text-gray-600">Total U9 (Base: 14)</label><span id="val-u9" class="text-sm font-bold text-blue-600 w-8 text-right">14</span></div>
+                <input type="range" id="u9" min="14" max="40" value="14" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600 -mt-3" oninput="actualizarSimulacion()">
+
+                <div class="flex justify-between items-center"><label class="text-[13px] font-semibold text-gray-600">Total U11 (Base: 19)</label><span id="val-u11" class="text-sm font-bold text-blue-600 w-8 text-right">19</span></div>
+                <input type="range" id="u11" min="19" max="45" value="19" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600 -mt-3" oninput="actualizarSimulacion()">
+
+                <div class="flex justify-between items-center"><label class="text-[13px] font-semibold text-gray-600">Total U13 (Base: 23)</label><span id="val-u13" class="text-sm font-bold text-blue-600 w-8 text-right">23</span></div>
+                <input type="range" id="u13" min="23" max="50" value="23" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600 -mt-3" oninput="actualizarSimulacion()">
+
+                <div class="flex justify-between items-center"><label class="text-[13px] font-semibold text-gray-600">Total U15 (Base: 19)</label><span id="val-u15" class="text-sm font-bold text-blue-600 w-8 text-right">19</span></div>
+                <input type="range" id="u15" min="19" max="45" value="19" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600 -mt-3" oninput="actualizarSimulacion()">
+
+                <div class="flex justify-between items-center"><label class="text-[13px] font-semibold text-gray-600">Total U17 (Base: 20)</label><span id="val-u17" class="text-sm font-bold text-blue-600 w-8 text-right">20</span></div>
+                <input type="range" id="u17" min="20" max="45" value="20" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600 -mt-3" oninput="actualizarSimulacion()">
+            </div>
+
+            <!-- Ajuste Niños Jaula -->
+            <div class="mt-4 pt-4 border-t border-gray-100 flex flex-col gap-2">
+                <div class="flex justify-between items-center">
+                    <label class="text-[13px] font-bold text-gray-700">Estimativo Niños Jaula</label>
+                    <span id="val-jaula" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">10</span>
+                </div>
+                <input type="range" id="jaula" min="10" max="50" value="10" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-500 mt-1" oninput="actualizarSimulacion()">
+                <p class="text-[11px] text-gray-400 leading-tight">Suma $20.000 extra al total por cada niño inscrito en la jaula.</p>
+            </div>
+
+            <!-- Ajuste de Morosidad -->
+            <div class="mt-4 pt-4 border-t border-gray-100 flex flex-col gap-2">
+                <div class="flex justify-between items-center">
+                    <label class="text-[13px] font-bold text-red-500">Impagos Estimados</label>
+                    <span id="val-morosidad" class="text-sm font-bold text-red-600 bg-red-50 px-2 py-1 rounded">10%</span>
+                </div>
+                <input type="range" id="morosidad" min="0" max="30" value="10" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-500 mt-1" oninput="actualizarSimulacion()">
+                <p class="text-[11px] text-gray-400 leading-tight">Descuenta automáticamente este porcentaje de la recaudación total mes a mes.</p>
+            </div>
+            
+            <button onclick="resetearValores()" class="mt-4 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2.5 px-4 rounded-xl transition duration-200">
+                Reiniciar a Valores Actuales
+            </button>
+        </div>
+
+        <!-- COLUMNA DERECHA: TARJETAS Y GRÁFICOS -->
+        <div class="w-full md:w-2/3 flex flex-col gap-6">
+            
+            <!-- Tarjetas de Resumen (KPIs) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center items-center relative overflow-hidden">
+                    <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Gastos Fijos Meta</span>
+                    <span class="text-2xl font-bold text-gray-800">$5.051.281</span>
+                    <div class="absolute bottom-0 left-0 w-full h-1 bg-gray-300"></div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center items-center border-b-4 border-b-yellow-400 relative" id="tarjeta-ingresos-border">
+                    <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1 text-center">Ingreso Real (Caja)</span>
+                    <span class="text-2xl font-bold text-yellow-500 transition-colors duration-300" id="card-ingresos">$0</span>
+                    <span class="text-[11px] text-red-400 font-medium mt-1 text-center" id="txt-perdida">- $0 por impagos</span>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center items-center">
+                    <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Balance Mensual</span>
+                    <span class="text-2xl font-bold text-red-500 transition-colors duration-300" id="card-balance">-$0</span>
+                </div>
+
+            </div>
+
+            <!-- Contenedor del Gráfico -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex-grow relative min-h-[350px]">
+                <h3 class="text-lg font-bold text-gray-700 mb-2">Proyección Financiera Mensual</h3>
+                <div class="absolute inset-0 p-6 pt-16">
+                    <canvas id="graficoFinanciero"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const GASTO_FIJO = 5051281;
+        const INGRESO_BASE_IDEAL = 3945000;
+        const VALOR_MENS_NORMAL = 45000; 
+        const VALOR_JAULA = 20000;
+
+        const BASE_U9 = 14;
+        const BASE_U11 = 19;
+        const BASE_U13 = 23;
+        const BASE_U15 = 19;
+        const BASE_U17 = 20;
+
+        let miGrafico;
+
+        window.onload = function() {
+            const ctx = document.getElementById('graficoFinanciero').getContext('2d');
+            
+            miGrafico = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Costos Fijos', 'Ingreso Real Esperado'],
+                    datasets: [{
+                        data: [GASTO_FIJO, 0], 
+                        backgroundColor: ['rgba(107, 114, 128, 0.8)', 'rgba(234, 179, 8, 0.8)'], 
+                        borderColor: ['rgb(75, 85, 99)', 'rgb(202, 138, 4)'],
+                        borderWidth: 2,
+                        borderRadius: 8,
+                        barPercentage: 0.6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: { duration: 400 },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) { return formatoCLP(context.raw); }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 7500000,
+                            grid: { color: 'rgba(0,0,0,0.05)', drawBorder: false },
+                            ticks: {
+                                callback: function(value) { return '$' + (value/1000000).toFixed(1) + 'M'; },
+                                font: { family: 'Inter', size: 12 }
+                            }
+                        },
+                        x: {
+                            grid: { display: false, drawBorder: false },
+                            ticks: { font: { family: 'Inter', size: 14, weight: 'bold' } }
+                        }
+                    }
+                }
+            });
+            
+            Chart.register({
+                id: 'metaLine',
+                afterDraw: function(chart) {
+                    if (chart.tooltip._active && chart.tooltip._active.length) return;
+                    const ctx = chart.ctx;
+                    const yAxis = chart.scales.y;
+                    const xAxis = chart.scales.x;
+                    const yPos = yAxis.getPixelForValue(GASTO_FIJO);
+                    
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(xAxis.left, yPos);
+                    ctx.lineTo(xAxis.right, yPos);
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = 'rgba(239, 68, 68, 0.6)';
+                    ctx.setLineDash([6, 4]);
+                    ctx.stroke();
+                    
+                    ctx.fillStyle = 'rgba(239, 68, 68, 0.8)';
+                    ctx.font = 'bold 12px Inter';
+                    ctx.fillText('META CERO (Cubrir Gastos)', xAxis.right - 170, yPos - 8);
+                    ctx.restore();
+                }
+            });
+
+            actualizarSimulacion();
+        };
+
+        function formatoCLP(numero) {
+            const signo = numero < 0 ? '-' : '';
+            return signo + '$' + Math.abs(Math.round(numero)).toLocaleString('es-CL');
+        }
+
+        function actualizarSimulacion() {
+            const u9 = parseInt(document.getElementById('u9').value) || BASE_U9;
+            const u11 = parseInt(document.getElementById('u11').value) || BASE_U11;
+            const u13 = parseInt(document.getElementById('u13').value) || BASE_U13;
+            const u15 = parseInt(document.getElementById('u15').value) || BASE_U15;
+            const u17 = parseInt(document.getElementById('u17').value) || BASE_U17;
+            const jaula = parseInt(document.getElementById('jaula').value) || 10;
+            const tasaMorosidad = parseInt(document.getElementById('morosidad').value) || 0;
+
+            document.getElementById('val-u9').innerText = u9;
+            document.getElementById('val-u11').innerText = u11;
+            document.getElementById('val-u13').innerText = u13;
+            document.getElementById('val-u15').innerText = u15;
+            document.getElementById('val-u17').innerText = u17;
+            document.getElementById('val-jaula').innerText = jaula;
+            document.getElementById('val-morosidad').innerText = tasaMorosidad + '%';
+
+            const crecimientoNuevos = (u9 - BASE_U9) + (u11 - BASE_U11) + (u13 - BASE_U13) + (u15 - BASE_U15) + (u17 - BASE_U17);
+            const ingresoExtraBruto = crecimientoNuevos * VALOR_MENS_NORMAL;
+            const ingresoExtraJaula = jaula * VALOR_JAULA;
+            const ingresoTotalBruto = INGRESO_BASE_IDEAL + ingresoExtraBruto + ingresoExtraJaula;
+            
+            const perdidaPorMorosidad = ingresoTotalBruto * (tasaMorosidad / 100);
+            const ingresoRealCaja = ingresoTotalBruto - perdidaPorMorosidad;
+            const nuevoBalance = ingresoRealCaja - GASTO_FIJO;
+
+            const elIngresos = document.getElementById('card-ingresos');
+            const elBalance = document.getElementById('card-balance');
+            const elBorder = document.getElementById('tarjeta-ingresos-border');
+            
+            elIngresos.innerText = formatoCLP(ingresoRealCaja);
+            document.getElementById('txt-perdida').innerText = `- ${formatoCLP(perdidaPorMorosidad)} por impagos`;
+            elBalance.innerText = formatoCLP(nuevoBalance);
+
+            if (nuevoBalance >= 0) {
+                elBalance.className = "text-2xl font-bold text-emerald-500 transition-colors duration-300";
+                elIngresos.className = "text-2xl font-bold text-emerald-500 transition-colors duration-300";
+                elBorder.className = "bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center items-center border-b-4 border-b-emerald-400 relative";
+                miGrafico.data.datasets[0].backgroundColor[1] = 'rgba(16, 185, 129, 0.8)';
+                miGrafico.data.datasets[0].borderColor[1] = 'rgb(5, 150, 105)';
+            } else {
+                elBalance.className = "text-2xl font-bold text-red-500 transition-colors duration-300";
+                elIngresos.className = "text-2xl font-bold text-yellow-500 transition-colors duration-300";
+                elBorder.className = "bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center items-center border-b-4 border-b-yellow-400 relative";
+                miGrafico.data.datasets[0].backgroundColor[1] = 'rgba(234, 179, 8, 0.8)';
+                miGrafico.data.datasets[0].borderColor[1] = 'rgb(202, 138, 4)';
+            }
+
+            miGrafico.data.datasets[0].data[1] = ingresoRealCaja;
+            miGrafico.update();
+        }
+
+        function resetearValores() {
+            document.getElementById('u9').value = BASE_U9;
+            document.getElementById('u11').value = BASE_U11;
+            document.getElementById('u13').value = BASE_U13;
+            document.getElementById('u15').value = BASE_U15;
+            document.getElementById('u17').value = BASE_U17;
+            document.getElementById('jaula').value = 10;
+            document.getElementById('morosidad').value = 10;
+            actualizarSimulacion();
+        }
+    </script>
+</body>
+</html>
